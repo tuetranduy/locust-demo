@@ -32,6 +32,11 @@ jobs:
                  --csv=locust_report \
                  --html=locust_report.html \
                  --exit-code-on-error 1
+                 
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
