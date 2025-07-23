@@ -1,0 +1,34 @@
+name: Performance Test
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  locust:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      - name: Install dependencies
+        run: |
+          pip install locust
+
+      - name: Run Locust Performance Test
+        run: |
+          locust -f simple-loadtest.py \
+                 --headless \
+                 --users 100 \
+                 --spawn-rate 10 \
+                 --run-time 2m \
+                 --host https://www.youtube.com \
+                 --csv=locust_report \
+                 --html=locust_report.html \
+                 --exit-code-on-error 1
